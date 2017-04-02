@@ -30,8 +30,11 @@ export default class PhoneCodeStrategy extends Strategy {
   authenticate(req, options) {
     const _self = this;
     // const stage = this.lookup(req, this._stageField);
-    const phone = _self.lookup(req, _self._phoneField).replace(/\D+/g, '');
-    const code = _self.lookup(req, _self._codeField).replace(/\D+/g, '');
+    let phone = _self.lookup(req, _self._phoneField);
+    let code = _self.lookup(req, _self._codeField);
+
+    if (phone && (typeof phone == 'string')) phone = phone.replace(/\D+/g, '');
+    if (code && (typeof code == 'string')) code = code.replace(/\D+/g, '');
 
     if (phone) {
       if (code) {
