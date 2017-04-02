@@ -1,6 +1,6 @@
 {
   "name": "passport-phone-code",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Passport strategy for verify phone by sended code",
   "main": "lib/index.js",
   "scripts": {
