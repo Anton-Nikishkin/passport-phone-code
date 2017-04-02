@@ -72,7 +72,7 @@ export default class PhoneCodeStrategy extends Strategy {
         });
         _self._sendCode(phone, token, (err) => {
           if (err) return _self.error(err);
-          _self.pass();
+          _self.fail('Code sended', 401);
         });
       }
     } else {
