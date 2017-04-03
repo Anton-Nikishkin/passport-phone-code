@@ -20,11 +20,14 @@ export default class PhoneCodeStrategy extends Strategy {
     // this._stageField = _options.stageField || 'stage';
     this._codeField = _options.codeField || 'code';
     this._phoneField = _options.phoneField || 'phone';
+    this._displayNameField = _options.displayNameField || 'displayName';
     this._passReqToCallback = _options.passReqToCallback;
     this._sendCode = _options.sendCode;
     this._parseRequest = _options.parseRequest || this.lookup;
     this._secret = _options.secret;
     this._window = _options.window || 6;
+    this._verify = _verify;
+    this._options = _options;
   }
 
   authenticate(req, options) {
@@ -32,6 +35,8 @@ export default class PhoneCodeStrategy extends Strategy {
     // const stage = this.lookup(req, this._stageField);
     let phone = _self.lookup(req, _self._phoneField);
     let code = _self.lookup(req, _self._codeField);
+
+    let displayName = _self.lookup(req, _self._displayNameField);
 
     if (phone && (typeof phone == 'string')) phone = phone.replace(/\D+/g, '');
     if (code && (typeof code == 'string')) code = code.replace(/\D+/g, '');
@@ -52,6 +57,28 @@ export default class PhoneCodeStrategy extends Strategy {
             if (!user) return _self.fail(info);
 
             return _self.success(user, info);
+          };
+
+          let accessToken = '';
+          let refreshToken = '';
+          let profile = {
+            provider: 'phone-code',
+            id: phone,
+            displayName: displayName || '',
+            // name: {
+            //   familyName: json.last_name || '',
+            //   givenName: json.first_name || '',
+            //   middleName: json.middle_name || ''
+            // },
+            // gender: json.gender || '',
+            // emails: [{
+            //   value: json.email || ''
+            // }],
+            // photos: [{
+            //   value: imageUrl
+            // }],
+            // _raw: body,
+            // _json: json
           };
 
           if (_self._passReqToCallback) {
